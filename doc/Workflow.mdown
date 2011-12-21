@@ -1,0 +1,1 @@
+The general workflow.  Import media using the importer system.  This triggers the engine to extract events and commit them to the db.
