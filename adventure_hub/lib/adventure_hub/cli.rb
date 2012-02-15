@@ -9,7 +9,7 @@ module AdventureHub
 
     desc "acquire SOURCE", "inspects the provided source and imports any media found at that source"
     def acquire(source_path)
-      
+      Commands::Acquire.new(Pathname.new(source_path)).run
     end
 
   end

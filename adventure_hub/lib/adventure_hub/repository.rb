@@ -9,15 +9,16 @@ module AdventureHub
     def initialize(base_path)
       @base_path = base_path
     end
-
-    def identify(input_path)
-      case find_type(input_path)
-      when :movie ;
-        categorize_movie(input_path)
-      when :unknown ;
-        puts "could not categorize #{input_path}"
-      end
+    
+    def import(type, source_path)
+      destination_path =  case type
+                          when :movie ; categorize_movie(path)
+                          end
+                          
+                          
+      
     end
+
 
     private
     def categorize_movie(path)
@@ -47,15 +48,5 @@ module AdventureHub
       hours_s + minutes_s + seconds_s
     end
 
-    def find_type(input_path)
-      # search by extension
-      
-      extension = File.extname(input_path)[1..-1].downcase
-      case extension
-      when MOVIE_EXTENSIONS ; return :movie
-      end
-
-      :unknown
-    end
   end
 end

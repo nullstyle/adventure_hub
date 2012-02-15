@@ -17,7 +17,7 @@ module AdventureHub
       end
       
       def continually_watch(search_base)
-        puts "watching for new sources..."
+        AH.log "watching for new sources..."
         FSSM.monitor(search_base.realpath, '*', :directories => true) do
           delete {|base, relative, type| }
           update {|base, relative, type| }

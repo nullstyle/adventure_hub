@@ -6,7 +6,15 @@ module AdventureHub
       end
       
       def run
-        puts "acquiring #{@path.realpath}"
+        AH.log "acquiring #{@path.realpath}"
+        
+        raise "Not a source!" unless Acquirer.source?(@path)
+        
+        Acquirer.new(@path).acquire do |type, source_file|
+          AH.log "found #{type.inspect}: #{source_file.realpath}"
+        end
+        
+
       end
     end
   end
