@@ -1,0 +1,5 @@
+#!/usr/bin/env ruby
+
+require 'adventure_hub'
+
+AdventureHub::Cli.start
