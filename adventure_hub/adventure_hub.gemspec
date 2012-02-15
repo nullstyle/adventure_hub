@@ -22,6 +22,6 @@ Gem::Specification.new do |s|
   # s.add_development_dependency "rspec"
   s.add_runtime_dependency "multi_json"
   s.add_runtime_dependency "activesupport"
-  s.add_runtime_dependency "guard"
+  s.add_runtime_dependency "fssm"
   s.add_runtime_dependency "thor"
 end
