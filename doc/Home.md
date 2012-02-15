@@ -21,5 +21,4 @@ Adventure Hub could be many many things, and in order to reign the scope in we h
 # Milestones
 
 1.  _Event Extraction - Listing_:  Run a command line file that takes an input directory and analyzes and extracts a list of events.
-
-2.  _Event Extraction - Media Creation_: The command line tool now creates media files associated with an event
+2.  _Event Extraction - Media Creation_: The command line tool now creates media files associated with an event.
