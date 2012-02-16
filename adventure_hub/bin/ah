@@ -2,4 +2,4 @@
 
 require 'adventure_hub'
 
-AdventureHub::Cli.start
+AdventureHub::Cli.start(ARGV)

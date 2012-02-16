@@ -25,7 +25,6 @@ module AdventureHub
     
     private
     def acquire_dcf(dcf, callback)
-      AH.log "searching #{dcf.to_s}"
       dcf.children.each do |path|
         next if path.directory?
         

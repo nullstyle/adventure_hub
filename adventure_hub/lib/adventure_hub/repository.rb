@@ -3,8 +3,7 @@ require 'time'
 
 module AdventureHub
   class Repository
-    MOVIE_EXTENSIONS = %w( mov mp4 avi )
-    GPS_EXTENSIONS = %w( nmea )
+    include Celluloid
 
     def initialize(base_path)
       @base_path = base_path

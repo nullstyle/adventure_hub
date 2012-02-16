@@ -1,37 +1,38 @@
 module AdventureHub
   module Commands
-    class Watch
+    class Watch < Base
       
-      def run()
-        search_base = Pathname.new Platforms.current::MOUNT_POINT
-        
-        perform_initial_search(search_base)
-        continually_watch(search_base)
+      def initialize
+        super
+        @search_base = Pathname.new Platforms.current::MOUNT_POINT
+      end
 
-      end
-      
-      private
-      def perform_initial_search(search_base)
-        sources = search_base.children.select{|dir| Acquirer.source? dir }
-        sources.each{|source| Acquire.new(source).run }
-      end
-      
-      def continually_watch(search_base)
-        AH.log "watching for new sources..."
-        FSSM.monitor(search_base.realpath, '*', :directories => true) do
-          delete {|base, relative, type| }
-          update {|base, relative, type| }
+      def perform
+        @previous_tick_sources = []
         
-        
-          create do |base, relative, type| 
-            pathname = Pathname.new(File.join(base, relative))
-          
-            Acquire.new(pathname).run if Acquirer.source?(pathname)
+        i = 0
+        loop do
+          current_sources = find_sources
+          new_sources = current_sources - @previous_tick_sources
+
+          new_sources.each do |source|
+            add_child(:Acquire, source).execute!
           end
+
+          @previous_tick_sources = current_sources
+          raise "explide" if ( i+= 1 ) > 10
+          sleep 1
         end
       end
       
-      
+      private
+      def find_sources
+        @search_base.children.select{|dir| Acquirer.source? dir }
+      rescue Errno::EACCES
+        retry
+      end
+
+
     end
   end
 end

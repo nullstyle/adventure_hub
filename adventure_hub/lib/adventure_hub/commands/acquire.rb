@@ -1,17 +1,18 @@
 module AdventureHub
   module Commands
-    class Acquire
+    class Acquire < Base
       def initialize(path)
+        super()
         @path = path
       end
       
-      def run
-        AH.log "acquiring #{@path.realpath}"
+      def perform
+        info "acquiring #{@path.realpath}"
         
         raise "Not a source!" unless Acquirer.source?(@path)
         
         Acquirer.new(@path).acquire do |type, source_file|
-          AH.log "found #{type.inspect}: #{source_file.realpath}"
+          info "found #{type.inspect}: #{source_file.realpath}"
         end
         
 
