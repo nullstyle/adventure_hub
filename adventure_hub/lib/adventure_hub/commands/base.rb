@@ -56,7 +56,10 @@ module AdventureHub
 
       def add_child(type, *args)
         klass = Commands.const_get type
-        klass.new_link(*args)
+        child = klass.new_link(*args)
+        child.parent = current_actor
+        @children << child
+        child
       end
         
       private
@@ -81,7 +84,7 @@ module AdventureHub
       end
 
       def wait_for_children
-        sleep(0.2) while @children.any?(&:alive)
+        sleep(0.2) while @children.any?(&:alive?)
       end
     end
   end

@@ -1,9 +1,10 @@
 module AdventureHub
   module Commands
     class SingleCopy < Base
-      BLOCK_SIZE = 16.kilobytes
+      BLOCK_SIZE = 128.kilobytes
 
-      def intiialize(source, destination)
+      def initialize(source, destination)
+        super()
         @source = source
         @destination = destination
       end
@@ -21,6 +22,8 @@ module AdventureHub
           buffer  = in_file.sysread(BLOCK_SIZE)
           out_file.syswrite(buffer)
           total += buffer.length
+
+          report :progress, [total, in_size]
         end while total < in_size
       end
       

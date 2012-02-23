@@ -7,6 +7,7 @@ require 'thor'
 require 'celluloid'
 require 'adventure_hub/celluloid_ext/actor'
 require 'adventure_hub/celluloid_ext/actor_proxy'
+require 'adventure_hub/celluloid_ext/mailbox'
 
 
 module AdventureHub

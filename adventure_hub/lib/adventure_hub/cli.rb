@@ -12,6 +12,16 @@ module AdventureHub
       run_root_command Commands::Acquire.new(Pathname.new(source_path))
     end
 
+
+    desc "copy SOURCE DEST", "inspects the provided source and imports any media found at that source"
+    def copy(source_path, dest_path)
+      prepare_run
+      command = Commands::BatchCopy.new
+      command.cp Pathname.new(source_path), Pathname.new(dest_path)
+
+      run_root_command command
+    end
+
     private
     def run_root_command(command)
       command.execute!

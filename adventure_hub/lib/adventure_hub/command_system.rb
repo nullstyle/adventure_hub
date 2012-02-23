@@ -12,7 +12,7 @@ module AdventureHub
     end
     
     def receive_report(command, type, value)
-      AH.log([command.class.name, type, value].inspect)
+      AH.log([command.actor_class_name, type, value].inspect)
     end
 
     def wait_until_exit
