@@ -5,5 +5,9 @@ module Celluloid
       @klass
     end
 
+    def address
+      mailbox.address
+    end
+
   end
 end

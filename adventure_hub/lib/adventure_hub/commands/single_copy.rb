@@ -1,7 +1,7 @@
 module AdventureHub
   module Commands
     class SingleCopy < Base
-      BLOCK_SIZE = 128.kilobytes
+      BLOCK_SIZE = 4096.kilobytes
 
       def initialize(source, destination)
         super()

@@ -19,7 +19,7 @@ module AdventureHub
       
       def receive_report(command, type, value)
         if type == :progress
-          @progress[command] = value
+          @progress[command.address] = value
           report :progresses, @progress
         else
           super
