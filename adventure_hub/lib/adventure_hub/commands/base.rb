@@ -55,10 +55,21 @@ module AdventureHub
       end
 
       def add_child(type, *args)
-        klass = Commands.const_get type
-        child = klass.new_link(*args)
+        child = if type.is_a?(Commands::Base)
+                  type.link(current_actor)
+                  type
+                else
+                  klass = Commands.const_get type
+                  klass.new_link(*args)
+                end
+
         child.parent = current_actor
         @children << child
+
+        if self.running?
+          child.execute!
+        end
+
         child
       end
         

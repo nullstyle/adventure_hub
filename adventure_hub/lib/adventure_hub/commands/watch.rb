@@ -16,7 +16,7 @@ module AdventureHub
           new_sources = current_sources - @previous_tick_sources
 
           new_sources.each do |source|
-            add_child(:Acquire, source).execute!
+            add_child(:Acquire, source)
           end
 
           @previous_tick_sources = current_sources

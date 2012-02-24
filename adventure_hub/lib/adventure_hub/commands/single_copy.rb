@@ -3,34 +3,38 @@ module AdventureHub
     class SingleCopy < Base
       BLOCK_SIZE = 4096.kilobytes
 
+      attr_reader :total_size
+
       def initialize(source, destination)
         super()
         @source = source
         @destination = destination
+
+        @source_f = @source.open("r")
+        @total_size = @source.size
       end
       
-      
       def perform
-        in_file     = @source.open("r")
+        @source_f     = @source.open("r")
         out_file    = @destination.open("w")
-        in_size     = @source.size
         
-        total       = 0
+        bytes_transferred = 0
 
-        begin
-          to_read = (in_size - total) < BLOCK_SIZE ? (in_size - total) : BLOCK_SIZE
-          buffer  = in_file.sysread(BLOCK_SIZE)
+        until bytes_transferred >= @total_size
+          bytes_left  = (@total_size - bytes_transferred)
+          to_read     = [bytes_left, BLOCK_SIZE].min
+
+          buffer  = @source_f.sysread(to_read)
           out_file.syswrite(buffer)
-          total += buffer.length
+          bytes_transferred += buffer.length
 
           report :progress, {
             source: @source,
             destination: @destination,
-            current: total,
-            total: in_size
+            current: bytes_transferred,
+            total: @total_size
           }
-          
-        end while total < in_size
+        end
       end
       
       

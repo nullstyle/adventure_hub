@@ -18,6 +18,8 @@ module AdventureHub
         Celluloid::Actor[:reporter].log!([command.actor_class_name, type, value].inspect)
       when :progress;
         Celluloid::Actor[:reporter].progress!("#{command.actor_class_name}:#{command.pid}", value[:current], value[:total])
+      when :lifecycle;
+        Celluloid::Actor[:reporter].log!("#{value} #{command.actor_class_name}:#{command.pid}")
       end
     end
 

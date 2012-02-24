@@ -9,17 +9,16 @@ module AdventureHub
     end
 
     def log(message)
+      restore_term_pos
+      clear_screen
       @io.puts message
       save_term_pos
 
-      # save cursor position
     end
     
     def progress(label, current, total)
       return unless @io.tty?
-
       restore_term_pos
-      #reset to saved cursor position
       @io.puts progress_line(label, current, total)
     end
 
@@ -48,6 +47,10 @@ module AdventureHub
 
     def restore_term_pos
       @io.printf "\033[u" if @io.tty?
+    end
+
+    def clear_screen
+      @io.printf "\033[0J" if @io.tty?
     end
   end
 end
