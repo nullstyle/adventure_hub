@@ -14,8 +14,6 @@ module AdventureHub
     # Returns a path
     def get_incoming_path_for_source
       sequence = 0
-      base = @base_path + "incoming" + "#{Time.now.to_i}"
-
       proposed = incoming_path + "#{Time.now.to_i}.#{sequence}"
       while proposed.exist?
         sequence += 1

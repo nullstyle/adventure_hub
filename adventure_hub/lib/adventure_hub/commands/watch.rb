@@ -2,9 +2,10 @@ module AdventureHub
   module Commands
     class Watch < Base
       
-      def initialize
-        super
+      def initialize(repo)
+        super()
         @search_base = Pathname.new Platforms.current::MOUNT_POINT
+        @repo = repo
       end
 
       def perform
@@ -15,7 +16,7 @@ module AdventureHub
           new_sources = current_sources - @previous_tick_sources
 
           new_sources.each do |source|
-            add_child Acquire.new(source)
+            add_child Acquire.new(@repo, source)
           end
 
           @previous_tick_sources = current_sources
