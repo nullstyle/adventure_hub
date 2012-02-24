@@ -10,13 +10,12 @@ module AdventureHub
       def perform
         @previous_tick_sources = []
         
-        i = 0
         loop do
           current_sources = find_sources
           new_sources = current_sources - @previous_tick_sources
 
           new_sources.each do |source|
-            add_child(:Acquire, source)
+            add_child Acquire.new(source)
           end
 
           @previous_tick_sources = current_sources
@@ -26,7 +25,7 @@ module AdventureHub
       
       private
       def find_sources
-        @search_base.children.select{|dir| Acquirer.source? dir }
+        @search_base.children.select{|dir| SourceScanner.source? dir }
       rescue Errno::EACCES
         retry
       end

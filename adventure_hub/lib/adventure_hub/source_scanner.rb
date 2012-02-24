@@ -1,7 +1,7 @@
 require 'pathname'
 
 module AdventureHub
-  class Acquirer
+  class SourceScanner
     DCIM = Pathname.new("DCIM")
     
     def self.source?(pathname)
@@ -14,23 +14,17 @@ module AdventureHub
       @path = path
     end
     
-    def acquire(&callback)
+    def scan
       dcim = (@path + "DCIM")
       dcfs = dcim.children.select(&:directory?)
       
-      dcfs.each{|dcf| acquire_dcf dcf, callback}
-      # identify source files
+      dcfs.map{|dcf| scan_dcf dcf}.flatten
     end
     
     
     private
-    def acquire_dcf(dcf, callback)
-      dcf.children.each do |path|
-        next if path.directory?
-        
-        type = Identifier.identify(path)
-        callback.call type, path unless type == :unknown
-      end
+    def scan_dcf(dcf)
+      dcf.children.select{|path| !path.directory? }
     end
   end
 end

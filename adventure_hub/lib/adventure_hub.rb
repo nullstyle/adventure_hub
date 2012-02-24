@@ -12,12 +12,12 @@ require 'adventure_hub/celluloid_ext/mailbox'
 
 
 module AdventureHub
-  autoload :Identifier, 'adventure_hub/identifier'
-  autoload :Repository, 'adventure_hub/repository'
-  autoload :Cli,        'adventure_hub/cli'
-  autoload :Platforms,  'adventure_hub/platforms'
-  autoload :Acquirer,   'adventure_hub/acquirer'
-  autoload :Reporter,   'adventure_hub/reporter'
+  autoload :Identifier,     'adventure_hub/identifier'
+  autoload :Repository,     'adventure_hub/repository'
+  autoload :Cli,            'adventure_hub/cli'
+  autoload :Platforms,      'adventure_hub/platforms'
+  autoload :SourceScanner,  'adventure_hub/source_scanner'
+  autoload :Reporter,       'adventure_hub/reporter'
 
 
   autoload :CommandSystem,   'adventure_hub/command_system'

@@ -5,6 +5,7 @@ module AdventureHub
 
     def initialize(io=$stdout)
       @io = io
+      @io.sync = true
       save_term_pos
     end
 
@@ -12,8 +13,9 @@ module AdventureHub
       restore_term_pos
       clear_screen
       @io.puts message
+      @io.flush
       save_term_pos
-
+      
     end
     
     def progress(label, current, total)

@@ -36,8 +36,6 @@ module AdventureHub
       destination_path =  case type
                           when :movie ; categorize_movie(path)
                           end
-                          
-                          
     end
 
 
