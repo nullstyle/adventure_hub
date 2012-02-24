@@ -1,5 +1,6 @@
 module AdventureHub
   class CommandSystem
+
     include Celluloid
     trap_exit :actor_died
 
@@ -12,7 +13,12 @@ module AdventureHub
     end
     
     def receive_report(command, type, value)
-      AH.log([command.actor_class_name, type, value].inspect)
+      case type
+      when :log;
+        Celluloid::Actor[:reporter].log!([command.actor_class_name, type, value].inspect)
+      when :progress;
+        Celluloid::Actor[:reporter].progress!("#{command.actor_class_name}:#{command.pid}", value[:current], value[:total])
+      end
     end
 
     def wait_until_exit
@@ -33,11 +39,12 @@ module AdventureHub
     end
 
     def actor_died(actor, reason)
-      if reason
-        AH.log([actor.actor_class_name, :lifecycle, :crashed, reason].inspect)
-      else
-        AH.log([actor.actor_class_name, :lifecycle, :terminated].inspect)
-      end
+      params = [actor.actor_class_name, :lifecycle]
+
+      # no reason deaths are due to "terminate" messages
+      params += reason ? [:crashed, reason] : [:terminated]
+
+      Celluloid::Actor[:reporter].log! params.inspect
       @commands.delete actor
     end
   end

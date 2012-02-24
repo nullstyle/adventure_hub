@@ -23,7 +23,13 @@ module AdventureHub
           out_file.syswrite(buffer)
           total += buffer.length
 
-          report :progress, [total, in_size]
+          report :progress, {
+            source: @source,
+            destination: @destination,
+            current: total,
+            total: in_size
+          }
+          
         end while total < in_size
       end
       

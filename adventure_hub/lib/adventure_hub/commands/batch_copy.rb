@@ -19,11 +19,20 @@ module AdventureHub
       
       def receive_report(command, type, value)
         if type == :progress
-          @progress[command.address] = value
+          @progress[command.pid] = value
           report :progresses, @progress
+          report :progress, get_progress
         else
           super
         end
+      end
+
+      private
+      def get_progress
+        bytes_transferred = @progress.values.inject(0){|memo, progress| memo + progress[:current]}
+        bytes_total = @progress.values.inject(0){|memo, progress| memo + progress[:total]}
+
+        { current: bytes_transferred, total: bytes_total }
       end
       
     end

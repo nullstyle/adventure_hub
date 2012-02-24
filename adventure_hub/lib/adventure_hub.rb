@@ -5,6 +5,7 @@ require 'active_support/core_ext/numeric'
 
 require 'thor'
 require 'celluloid'
+require 'terminfo'
 require 'adventure_hub/celluloid_ext/actor'
 require 'adventure_hub/celluloid_ext/actor_proxy'
 require 'adventure_hub/celluloid_ext/mailbox'
@@ -42,10 +43,6 @@ module AdventureHub
   def self.shutdown
     puts "shutting down"
     Celluloid::Actor[:command_system].kill
-  end
-  
-  def self.log(message)
-    Celluloid::Actor[:reporter].log! message
   end
 
   def self.wait_for_actor(actor)

@@ -5,7 +5,7 @@ module Celluloid
       @klass
     end
 
-    def address
+    def pid
       mailbox.address
     end
 
