@@ -20,7 +20,6 @@ module AdventureHub
           end
 
           @previous_tick_sources = current_sources
-          raise "explide" if ( i+= 1 ) > 10
           sleep 1
         end
       end

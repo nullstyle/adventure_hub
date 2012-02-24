@@ -1,5 +1,6 @@
 require 'multi_json'
 require 'time'
+require 'fileutils'
 
 module AdventureHub
   class Repository
@@ -8,6 +9,28 @@ module AdventureHub
     def initialize(base_path)
       @base_path = base_path
     end
+
+    ##
+    # Returns a path
+    def get_incoming_path_for_source
+      sequence = 0
+      base = @base_path + "incoming" + "#{Time.now.to_i}"
+
+      proposed = incoming_path + "#{Time.now.to_i}.#{sequence}"
+      while proposed.exist?
+        sequence += 1
+        proposed = incoming_path + "#{Time.now.to_i}.#{sequence}"
+      end
+
+      proposed.mkpath
+      proposed
+    end
+
+    def clean_empty_incoming_dirs
+      directories = incoming_path.children.select{|child| child.directory? && child.children.empty? }
+      directories.map(&:rmdir)
+    end
+
     
     def import(type, source_path)
       destination_path =  case type
@@ -15,11 +38,16 @@ module AdventureHub
                           end
                           
                           
-      
     end
 
 
     private
+    def incoming_path
+      path = @base_path + "incoming"
+      path.mkpath
+      path
+    end
+
     def categorize_movie(path)
       json = `ffprobe -v quiet -print_format json -show_streams #{path}`
       data = MultiJson.decode(json)
