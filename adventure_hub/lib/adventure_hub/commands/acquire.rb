@@ -20,12 +20,9 @@ module AdventureHub
         sources_and_destinations = source_paths.zip(destination_paths)
         copy = BatchCopy.new
 
-        sources_and_destinations[0..22].each do |source, destination|
-          info "#{source} => #{destination}"
-        end
-
         sources_and_destinations.each do |source, destination|
           destination.parent.mkpath
+          # debug "#{source} => #{destination}"
           copy.cp source, destination.realdirpath
         end
         add_child copy

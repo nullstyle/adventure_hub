@@ -6,22 +6,20 @@ module AdventureHub
     def initialize(io=$stdout)
       @io = io
       @io.sync = true
-      save_term_pos
     end
 
     def log(message)
-      restore_term_pos
+      reset_to_beginning_of_line
       clear_screen
       @io.puts message
       @io.flush
-      save_term_pos
       
     end
     
     def progress(label, current, total)
       return unless @io.tty?
-      restore_term_pos
-      @io.puts progress_line(label, current, total)
+      reset_to_beginning_of_line
+      @io.print progress_line(label, current, total)
     end
 
     private
@@ -42,17 +40,17 @@ module AdventureHub
       line += "[#{progress_body.ljust(progress_bar_body_length)}]"
       line
     end
-
-    def save_term_pos
-      @io.printf "\033[s" if @io.tty?
-    end
-
-    def restore_term_pos
-      @io.printf "\033[u" if @io.tty?
-    end
-
+    
     def clear_screen
-      @io.printf "\033[0J" if @io.tty?
+      return unless @io.tty?
+      @io.printf "\033[0J"
     end
+
+    def reset_to_beginning_of_line
+      return unless @io.tty?
+      @io.printf "\033[1G"
+    end
+
+
   end
 end
