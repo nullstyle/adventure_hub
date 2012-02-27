@@ -13,7 +13,7 @@ module AdventureHub
         destination = @repo.get_incoming_path_for_source
 
         source_dcim = @source_path + SourceScanner::DCIM
-        # info scan_summary(source_paths)
+        info scan_summary(source_paths)
 
         destination_paths = source_paths.map{|f| destination + f.relative_path_from(source_dcim)}
 
@@ -25,8 +25,16 @@ module AdventureHub
           # debug "#{source} => #{destination}"
           copy.cp source, destination.realdirpath
         end
+        total_size = copy.total_size
+
         add_child copy
         wait_for_children
+
+        info "Initial copy complete (#{total_size} bytes imported)..."
+        info "Deleting from source"
+
+
+        info "Acquisition complete"
       end
 
 

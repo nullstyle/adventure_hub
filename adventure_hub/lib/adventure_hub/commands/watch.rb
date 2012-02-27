@@ -10,6 +10,7 @@ module AdventureHub
 
       def perform
         @previous_tick_sources = []
+        info "Waiting for new sources..."
         
         loop do
           current_sources = find_sources

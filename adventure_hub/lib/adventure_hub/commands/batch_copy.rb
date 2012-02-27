@@ -3,6 +3,8 @@ module AdventureHub
     class BatchCopy < Base
       CONCURRENCY = 5
 
+      attr_reader :total_size
+      
       def initialize
         super
         @queued_commands = []
