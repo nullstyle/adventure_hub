@@ -12,7 +12,13 @@ module AdventureHub
       run_root_command Commands::Acquire.new(Pathname.new(source_path))
     end
 
+    desc "init PATH", "creates a new ahub repository"
+    def init(path=".")
+      Repository.create(Pathname.new(path))
+    end
 
+
+    # DUMMY TEST COMMANDS
     desc "copy SOURCE DEST", "inspects the provided source and imports any media found at that source"
     def copy(source_path, dest_path)
       
