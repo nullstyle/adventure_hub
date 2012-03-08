@@ -17,22 +17,11 @@ module AdventureHub
       Repository.create(Pathname.new(path))
     end
 
-
-    # DUMMY TEST COMMANDS
-    desc "copy SOURCE DEST", "inspects the provided source and imports any media found at that source"
-    def copy(source_path, dest_path)
-      
-      command = Commands::BatchCopy.new
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".1")
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".2")
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".3")
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".4")
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".5")
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".6")
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".7")
-      command.cp Pathname.new(source_path), Pathname.new(dest_path + ".8")
-
-      run_root_command command
+    desc "repl PATH", "creates a new ahub repository"
+    def repl(repo_path)
+      repo = Repository.new Pathname.new(repo_path)
+      repl = Repl.new repo
+      repl.start
     end
 
     private

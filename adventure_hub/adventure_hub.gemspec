@@ -25,4 +25,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "thor"
   s.add_runtime_dependency "celluloid"
   s.add_runtime_dependency "ruby-terminfo"
+  s.add_runtime_dependency "sequel"
+  s.add_runtime_dependency "ripl"
+  s.add_runtime_dependency "popen4"
 end
