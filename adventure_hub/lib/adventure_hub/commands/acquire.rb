@@ -18,7 +18,7 @@ module AdventureHub
         destination_paths = source_paths.map{|f| destination + f.relative_path_from(source_dcim)}
 
         sources_and_destinations = source_paths.zip(destination_paths)
-        copy = BatchCopy.new
+        copy = CopyBatch.new
 
         sources_and_destinations.each do |source, destination|
           destination.parent.mkpath

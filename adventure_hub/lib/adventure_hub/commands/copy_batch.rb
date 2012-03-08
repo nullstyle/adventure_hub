@@ -1,6 +1,6 @@
 module AdventureHub
   module Commands
-    class BatchCopy < Base
+    class CopyBatch < Base
       CONCURRENCY = 5
 
       attr_reader :total_size
@@ -14,7 +14,7 @@ module AdventureHub
       end
       
       def cp(source, destination)
-        command = SingleCopy.new(source, destination)
+        command = CopySingle.new(source, destination)
         @total_size += command.total_size
         @queued_commands << command
       end

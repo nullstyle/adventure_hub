@@ -27,8 +27,8 @@ module AdventureHub
     autoload :Verbosify,      'adventure_hub/commands/verbosify'
     autoload :Acquire,        'adventure_hub/commands/acquire'
     autoload :Watch,          'adventure_hub/commands/watch'
-    autoload :BatchCopy,      'adventure_hub/commands/batch_copy'
-    autoload :SingleCopy,     'adventure_hub/commands/single_copy'
+    autoload :CopyBatch,      'adventure_hub/commands/copy_batch'
+    autoload :CopySingle,     'adventure_hub/commands/copy_single'
     autoload :IdentifySingle, 'adventure_hub/commands/identify_single'
   end
 

@@ -1,6 +1,6 @@
 module AdventureHub
   module Commands
-    class SingleCopy < Base
+    class CopySingle < Base
       BLOCK_SIZE = 4096.kilobytes
 
       attr_reader :total_size
