@@ -2,6 +2,7 @@ require "adventure_hub/version"
 
 require 'pathname'
 require 'active_support/core_ext/numeric'
+require 'adventure_hub/core_ext/numeric'
 
 require 'thor'
 require 'celluloid'
