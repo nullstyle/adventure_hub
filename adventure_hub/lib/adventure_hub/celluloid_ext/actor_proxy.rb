@@ -5,6 +5,10 @@ module Celluloid
       @klass
     end
 
+    def actor?
+      true
+    end
+
     def pid
       mailbox.address
     end

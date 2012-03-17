@@ -1,6 +1,7 @@
 require "adventure_hub/version"
 
 require 'pathname'
+require 'adventure_hub/core_ext/object'
 require 'active_support/core_ext/numeric'
 require 'adventure_hub/core_ext/numeric'
 
@@ -48,15 +49,23 @@ module AdventureHub
   end
 
   def self.shutdown
-    puts "shutting down"
+    puts "Shutting down..."
+    @shutting_down = true
     Celluloid::Actor[:command_system].kill
   end
 
   def self.wait_for_actor(actor)
+    return unless actor.actor?
+
     loop do
+      if @shutting_down
+        actor.terminate
+      end
       break unless actor.alive?
       sleep 1
     end
+  rescue => e
+    exit
   end
 
 end
