@@ -4,6 +4,10 @@ require 'fileutils'
 
 module AdventureHub
   class Repository
+    autoload :IncomingProcessor,  'adventure_hub/repository/incoming_processor'
+    autoload :ResourceDB,         'adventure_hub/repository/resource_db'
+    autoload :Disk,               'adventure_hub/repository/disk'
+
     include Celluloid
 
     REPO_FILE = Pathname.new("main.ahubrepo")
@@ -33,6 +37,8 @@ module AdventureHub
 
     def initialize(base_path)
       @base_path = base_path
+      @incoming = IncomingProcessor.supervise(current_actor)
+      @db = ResourceDB.new(current_actor)
     end
 
     def mounted?
@@ -53,7 +59,9 @@ module AdventureHub
       proposed
     end
 
-
+    def resource_db_path
+      @base_path + "resources.sqlite"
+    end
 
     private
     def incoming_path
