@@ -24,6 +24,12 @@ module AdventureHub
       repl.start
     end
 
+    desc "curate PATH", "starts up the curation server"
+    def curate(repo_path)
+      repo = Repository.new Pathname.new(repo_path)
+      server = Servers::Curate.run! repo: repo
+    end
+
     private
     def run_root_command(command)
       command.execute!

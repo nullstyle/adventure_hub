@@ -34,6 +34,13 @@ module AdventureHub
     autoload :IdentifySingle, 'adventure_hub/commands/identify_single'
   end
 
+  module Servers
+    autoload :Container,  'adventure_hub/servers/container'
+    autoload :Base,       'adventure_hub/servers/base'
+    autoload :Curate,     'adventure_hub/servers/curate'
+
+  end
+
   module Util
     autoload :ShellRunner, "adventure_hub/util/shell_runner"
   end
