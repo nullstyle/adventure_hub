@@ -46,6 +46,7 @@ module AdventureHub
 
     module Metadata
       autoload :Photo, "adventure_hub/util/metadata/photo"
+      autoload :Video, "adventure_hub/util/metadata/video"
 
 
     end
