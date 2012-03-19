@@ -35,6 +35,13 @@ module AdventureHub
     autoload :IdentifySingle, 'adventure_hub/commands/identify_single'
   end
 
+  module Models
+    autoload :Disk,     'adventure_hub/models/disk'
+    autoload :Resource, 'adventure_hub/models/resource'
+    autoload :Sequence, 'adventure_hub/models/sequence'
+    autoload :File,     'adventure_hub/models/file'
+  end
+
   module Servers
     autoload :Container,  'adventure_hub/servers/container'
     autoload :Base,       'adventure_hub/servers/base'

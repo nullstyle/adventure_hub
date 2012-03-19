@@ -1,5 +1,5 @@
 module AdventureHub
-  class Repository
+  module Models
 
     ##
     # Represents to information and tasks for a disk given to support adventure hub.

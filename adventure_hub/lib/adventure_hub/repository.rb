@@ -6,7 +6,6 @@ module AdventureHub
   class Repository
     autoload :IncomingProcessor,  'adventure_hub/repository/incoming_processor'
     autoload :ResourceDB,         'adventure_hub/repository/resource_db'
-    autoload :Disk,               'adventure_hub/repository/disk'
 
     include Celluloid
 
@@ -38,7 +37,7 @@ module AdventureHub
     def initialize(base_path)
       @base_path = base_path
       # @incoming = IncomingProcessor.supervise(current_actor)
-      # @db = ResourceDB.supervise(current_actor)
+      @db = ResourceDB.new(current_actor)
     end
 
     def mounted?
