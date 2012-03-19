@@ -1,8 +1,8 @@
 class Pathname
   def child_of?(other)
-    return false if cleanpath == other.cleanpath
+    return false if expand_path == other.expand_path
 
-    !!(cleanpath.to_s =~ Regexp.new("^#{other.cleanpath.to_s}"))
+    !!(expand_path.cleanpath.to_s =~ Regexp.new("^#{other.expand_path.cleanpath.to_s}"))
   end
 
   def parent_of?(other)
