@@ -12,8 +12,8 @@ module AdventureHub
           audio_stream  = data["streams"].find{|stream|  stream["codec_type"] == "audio" }
 
           {
-            occurred_at: Time.parse(video_stream["tags"]["creation_time"]),
-            duration: video_stream["duration"].to_i,
+            occurred_at:    Time.parse(video_stream["tags"]["creation_time"]),
+            duration:       video_stream["duration"].to_i,
             video_metadata: video_stream,
             audio_metadata: audio_stream
           }
