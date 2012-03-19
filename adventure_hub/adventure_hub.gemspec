@@ -21,16 +21,19 @@ Gem::Specification.new do |s|
   # specify any dependencies here; for example:
   # s.add_development_dependency "rspec"
   s.add_runtime_dependency "multi_json"
-  s.add_runtime_dependency "activesupport"
+  s.add_runtime_dependency "json", ">= 1.6.5"
+
+  s.add_runtime_dependency "activesupport", ">= 3.1.0"
   s.add_runtime_dependency "thor"
   s.add_runtime_dependency "celluloid"
   s.add_runtime_dependency "ruby-terminfo"
   s.add_runtime_dependency "sequel"
-  s.add_runtime_dependency "sqlite3"
   s.add_runtime_dependency "ripl"
   s.add_runtime_dependency "popen4"
   s.add_runtime_dependency "sinatra"
   s.add_runtime_dependency "thin"
   
-  s.add_runtime_dependency "data_mapper"
+  s.add_runtime_dependency "data_mapper",       ">= 1.2.0"
+  s.add_runtime_dependency "dm-sqlite-adapter", ">= 1.2.0"
+  s.add_runtime_dependency "do_sqlite3", ">= 0.10.8"
 end

@@ -41,6 +41,8 @@ module AdventureHub
 
   module Models
     autoload :Disk,     'adventure_hub/models/disk'
+
+    DataMapper.setup(:default, {:adapter => "in_memory"})
     require 'adventure_hub/models/resource'
     require 'adventure_hub/models/sequence'
     require 'adventure_hub/models/file'
@@ -61,13 +63,12 @@ module AdventureHub
     module Metadata
       autoload :Photo, "adventure_hub/util/metadata/photo"
       autoload :Video, "adventure_hub/util/metadata/video"
-
-
     end
   end
   
   
   def self.setup
+
     Reporter.supervise_as :reporter
     CommandSystem.supervise_as :command_system
 

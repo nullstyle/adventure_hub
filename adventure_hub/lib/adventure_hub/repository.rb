@@ -5,9 +5,6 @@ require 'fileutils'
 module AdventureHub
   class Repository
     autoload :IncomingProcessor,  'adventure_hub/repository/incoming_processor'
-    autoload :ResourceDB,         'adventure_hub/repository/resource_db'
-
-    include Celluloid
 
     REPO_FILE = Pathname.new("main.ahubrepo")
 
@@ -37,7 +34,16 @@ module AdventureHub
     def initialize(base_path)
       @base_path = base_path
       # @incoming = IncomingProcessor.supervise(current_actor)
-      @db = ResourceDB.new(current_actor)
+
+      DataMapper.setup(repo_dm_id, "sqlite:#{resource_db_path.expand_path}")
+
+      DataMapper::Model.descendants.each do |model|
+        model.auto_upgrade! repo_dm_id
+      end
+    end
+
+    def with_repo
+       DataMapper.repository(repo_dm_id){ yield }
     end
 
     def mounted?
@@ -63,6 +69,12 @@ module AdventureHub
     end
 
     private
+    #returns the id under which the datamapper repository is registered
+    def repo_dm_id
+      @repo_dm_id ||= :"repo_#{self.object_id}"
+    end
+
+
     def incoming_path
       path = @base_path + "incoming"
       path.mkpath
