@@ -31,4 +31,6 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "popen4"
   s.add_runtime_dependency "sinatra"
   s.add_runtime_dependency "thin"
+  
+  s.add_runtime_dependency "data_mapper"
 end

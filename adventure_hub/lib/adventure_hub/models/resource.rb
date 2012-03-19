@@ -2,19 +2,18 @@ module AdventureHub
   module Models
 
     class Resource
-      
+      include DataMapper::Resource
 
-      attr_reader :path
-      attr_reader :metadata
-      attr_reader :created_at
-      attr_reader :updated_at
-      attr_reader :occurred_at
-      attr_reader :duration
+      property :id,           Serial
+      property :type,         Enum[ :photo, :video, :journal, :gps, :unknown ]
+      property :occurred_at,  Time
+      property :duration,     Float
+      property :metadata,     Json
 
-      def initialize(repo)
-        @repo = repo
-      end
+      property :created_at,   Time
+      property :updated_at,   Time
 
+      has n,    :sequences
 
     end
     

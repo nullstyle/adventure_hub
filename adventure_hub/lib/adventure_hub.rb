@@ -9,6 +9,10 @@ require 'adventure_hub/core_ext/pathname'
 require 'thor'
 require 'celluloid'
 require 'terminfo'
+require 'data_mapper'
+require 'dm-types'
+
+
 require 'adventure_hub/celluloid_ext/actor'
 require 'adventure_hub/celluloid_ext/actor_proxy'
 require 'adventure_hub/celluloid_ext/mailbox'
@@ -37,9 +41,10 @@ module AdventureHub
 
   module Models
     autoload :Disk,     'adventure_hub/models/disk'
-    autoload :Resource, 'adventure_hub/models/resource'
-    autoload :Sequence, 'adventure_hub/models/sequence'
-    autoload :File,     'adventure_hub/models/file'
+    require 'adventure_hub/models/resource'
+    require 'adventure_hub/models/sequence'
+    require 'adventure_hub/models/file'
+    DataMapper.finalize
   end
 
   module Servers

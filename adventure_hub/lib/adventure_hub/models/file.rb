@@ -2,13 +2,15 @@ module AdventureHub
   module Models
     # a single file within a sequence
     class File
+      include DataMapper::Resource
 
-      attr_reader :sequence #parent of this file
-      delegate :resource, :to => sequence
+      belongs_to :sequence, :key => true #parent of this file
+      delegate :resource, :to => :sequence
 
-      attr_reader :path
-      attr_reader :size
-      attr_reader :index
+      property :path,   FilePath, :key => true
+      property :index,  Integer, :key => true
+      
+      property :size,   Integer
 
     end
     
