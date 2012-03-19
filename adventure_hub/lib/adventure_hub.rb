@@ -4,6 +4,7 @@ require 'pathname'
 require 'adventure_hub/core_ext/object'
 require 'active_support/core_ext/numeric'
 require 'adventure_hub/core_ext/numeric'
+require 'adventure_hub/core_ext/pathname'
 
 require 'thor'
 require 'celluloid'
