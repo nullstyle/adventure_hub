@@ -59,8 +59,12 @@ describe AdventureHub::Util::Eventing do
       @many_receiver.pings.should == [["foo"], ["bar"]]
     end
 
-    it "shold remove any 'once' listeners after the event is emitted" do
+    it "should remove any 'once' listeners after the event is emitted" do
       @once_receiver.pings.should == [["foo"]]
+    end
+
+    it "should not raise an exception when there are no listeners" do
+      EventingTester.new.send_ping
     end
   end
 end
