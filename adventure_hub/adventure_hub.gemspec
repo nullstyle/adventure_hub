@@ -19,7 +19,6 @@ Gem::Specification.new do |s|
   s.require_paths = ["lib"]
 
   # specify any dependencies here; for example:
-  # s.add_development_dependency "rspec"
   s.add_runtime_dependency "multi_json"
   s.add_runtime_dependency "json", ">= 1.6.5"
 
@@ -36,4 +35,7 @@ Gem::Specification.new do |s|
   s.add_runtime_dependency "data_mapper",       ">= 1.2.0"
   s.add_runtime_dependency "dm-sqlite-adapter", ">= 1.2.0"
   s.add_runtime_dependency "do_sqlite3", ">= 0.10.8"
+
+  s.add_development_dependency "rspec", "~> 2.9.0"
+  s.add_development_dependency 'rake'
 end

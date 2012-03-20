@@ -59,6 +59,7 @@ module AdventureHub
   module Util
     autoload :ShellRunner,  "adventure_hub/util/shell_runner"
     autoload :DiskInfo,     "adventure_hub/util/disk_info"
+    autoload :Eventing,     "adventure_hub/util/eventing"
 
     module Metadata
       autoload :Photo, "adventure_hub/util/metadata/photo"
