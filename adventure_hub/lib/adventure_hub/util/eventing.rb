@@ -26,7 +26,7 @@ module AdventureHub
       def emit(event, *params)
         listeners_for_event = listeners[event]
 
-        listeners_for_event.each{|lr| lr.target.public_send lr.handler, *params }
+        listeners_for_event.each{|lr| lr.target.send lr.handler, *params }
         listeners[event] -= listeners_for_event.select{|lr| lr.multiplicity == :once }
       end
 
