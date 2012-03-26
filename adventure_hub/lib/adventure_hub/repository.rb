@@ -4,7 +4,10 @@ require 'fileutils'
 
 module AdventureHub
   class Repository
+    include Celluloid
+
     autoload :IncomingProcessor,  'adventure_hub/repository/incoming_processor'
+    autoload :DiskWatcher,        'adventure_hub/repository/disk_watcher'
 
     REPO_FILE = Pathname.new("main.ahubrepo")
 
@@ -34,10 +37,12 @@ module AdventureHub
     def initialize(base_path)
       @base_path = base_path
       @shell_runner = Util::ShellRunner.new
+      @disk_watcher = DiskWatcher.new(@shell_runner)
+      @disk_watcher.on(:disk_changed, current_actor, :disk_changes!)
+
       # @incoming = IncomingProcessor.supervise(current_actor)
 
       DataMapper.setup(repo_dm_id, "sqlite:#{resource_db_path.expand_path}")
-
       DataMapper::Model.descendants.each do |model|
         model.auto_upgrade! repo_dm_id
       end
@@ -69,12 +74,15 @@ module AdventureHub
       @base_path + "resources.sqlite"
     end
 
+    def disk_changes(changed)
+      puts changed[:added]
+    end
+
     private
     #returns the id under which the datamapper repository is registered
     def repo_dm_id
       @repo_dm_id ||= :"repo_#{self.object_id}"
     end
-
 
     def incoming_path
       path = @base_path + "incoming"
