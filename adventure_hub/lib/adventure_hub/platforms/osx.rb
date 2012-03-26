@@ -1,7 +1,7 @@
 module AdventureHub
   module Platforms
     module OSX
-      MOUNT_POINT = "/Volumes"
+      MOUNT_POINT = Pathname.new "/Volumes"
       
       
     end
