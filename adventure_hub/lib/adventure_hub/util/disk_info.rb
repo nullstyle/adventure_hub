@@ -4,10 +4,11 @@ module AdventureHub
     class DiskInfo
       attr_reader :data
 
-      def initialize
-        command = Util::ShellRunner.new("df -k")
+      def initialize(runner)
+        result = runner.run("df -k")
 
-        raw = command.stdout.lines
+        raw = result.stdout.lines
+        
         header = raw.first.split
         disk_lines = raw.drop(1).map(&:split)
 

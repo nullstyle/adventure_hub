@@ -5,32 +5,20 @@ module AdventureHub
     class ShellRunner
       include Celluloid
 
-      def initialize(command)
-        @command = command
-        after(0.1){ run }
-      end
+      class Result < Struct.new(:stdout, :stderr, :status) ; end
 
-      def stdout
-        run
-        @stdout
-      end
-
-      def stderr
-        run
-        @stderr
-      end
-
-      def run
-        return if @ran
+      def run(command)
         require 'popen4'
 
-        status = POpen4::popen4(@command) do |out, err, stdin, pid|
+        stdout, stderr = *[nil,nil]
+
+        status = POpen4::popen4(command) do |out, err, stdin, pid|
           stdin.close
-          @stdout = out.read.strip
-          @stderr = err.read.strip
+          stdout = out.read.strip
+          stderr = err.read.strip
         end
 
-        @ran = true
+        Result.new(stdout, stderr, status.exitstatus)
       end
     end
   end

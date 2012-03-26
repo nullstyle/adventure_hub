@@ -33,6 +33,7 @@ module AdventureHub
 
     def initialize(base_path)
       @base_path = base_path
+      @shell_runner = Util::ShellRunner.new
       # @incoming = IncomingProcessor.supervise(current_actor)
 
       DataMapper.setup(repo_dm_id, "sqlite:#{resource_db_path.expand_path}")

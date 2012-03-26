@@ -5,8 +5,8 @@ module AdventureHub
       class Video
         include Celluloid
 
-        def extract(path)
-          json    = Util::ShellRunner.new("ffprobe -v quiet -print_format json -show_streams #{@path}").stdout
+        def extract(path, runner)
+          json    = runner.run("ffprobe -v quiet -print_format json -show_streams #{@path}").stdout
           data    = MultiJson.decode(json)
           video_stream  = data["streams"].find{|stream|  stream["codec_type"] == "video" }
           audio_stream  = data["streams"].find{|stream|  stream["codec_type"] == "audio" }

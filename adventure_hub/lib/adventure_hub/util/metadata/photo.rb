@@ -5,8 +5,8 @@ module AdventureHub
       class Photo
         include Celluloid
 
-        def extract(path)
-          json  = Util::ShellRunner.new("exiftool -json #{path}").stdout
+        def extract(path, runner)
+          json  = runner.run("exiftool -json #{path}").stdout
           data  = MultiJson.decode(json)
           exif  = data.first
 
