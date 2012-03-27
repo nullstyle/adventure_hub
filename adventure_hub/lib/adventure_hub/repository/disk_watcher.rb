@@ -26,9 +26,9 @@ module AdventureHub
           added_devices   = current_devices - previous_devices
           removed_devices = previous_devices - current_devices
 
-          #TODO: send the disk info with the event
-          emit(:disks_changed, added:added_devices, removed:removed_devices) if added_devices.any? || removed_devices.any?
-
+          added_devices.each  {|device| emit(:disk_added,   current_disks[device]) }
+          removed_devices.each{|device| emit(:disk_removed, @previous_disks[device]) }
+          
           @previous_disks = current_disks
           sleep 1
         end

@@ -10,6 +10,7 @@ module AdventureHub
     autoload :DiskWatcher,        'adventure_hub/repository/disk_watcher'
 
     REPO_FILE = Pathname.new("main.ahubrepo")
+    attr_reader :mounted_disks
 
     def self.repository?(path)
       local_repo_file = path + REPO_FILE
@@ -74,8 +75,16 @@ module AdventureHub
       @base_path + "resources.sqlite"
     end
 
-    def disk_changes(changed)
-      puts changed[:added]
+    def disk_added(disk)
+      if repo_disk = Model::Disk.retrieve(disk[:mount])
+        @mounted_disks << repo_disk
+      elsif false # a source
+        # if it is a source instead, import it.
+      end
+    end
+
+    def disk_removed(removed_disk)
+      @mounted_disks.delete_if{|disk| disk.mounted_path == removed_disk[:mount]}
     end
 
     private
