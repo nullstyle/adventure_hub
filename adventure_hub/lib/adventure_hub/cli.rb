@@ -18,8 +18,8 @@ module AdventureHub
     end
 
     desc "repl PATH", "creates a new ahub repository"
-    def repl(repo_path)
-      repo = Repository.new Pathname.new(repo_path)
+    def repl(repo_path=nil)
+      repo = Repository.new Pathname.new(repo_path) if repo_path
       repl = Repl.new repo
       repl.start
     end
