@@ -15,12 +15,13 @@ module AdventureHub
 
       attr_accessor :mounted_path
 
-      def self.retrieve(repo, mounted_path)
+      def self.retrieve(mounted_path)
         uuid_path = mounted_path + "adventures/uuid"
-        return nil unless uuid_path.exists?
-        uuid = uuid.read.strip
+        return nil unless uuid_path.exist?
+        uuid = uuid_path.read.strip
 
         disk = get(uuid)
+        disk.mounted_path = mounted_path
         disk.ensure_structure
         disk
       end
@@ -29,19 +30,17 @@ module AdventureHub
       # initializes the disk for use.  Creates the initial directory structure and
       # finds the total and available space, as well as creates the record in the db
       #
-      def self.init(repo, mounted_path)
+      def self.init(mounted_path)
         # make sure it's not a disk already
 
-        repo.with_repo do
-          disk = new
-          disk.mounted_path = mounted_path
+        disk = new
+        disk.mounted_path = mounted_path
 
-          raise ArgumentError, "Disk is already used by an ahub repo" if disk.uuid_path.exist?
+        raise ArgumentError, "Disk is already used by an ahub repo" if disk.uuid_path.exist?
 
-          p disk.save
-          disk.ensure_structure
-          disk
-        end
+        disk.save
+        disk.ensure_structure
+        disk
       end
 
 

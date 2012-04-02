@@ -42,11 +42,13 @@ module AdventureHub
         model.auto_upgrade! repo_dm_id
       end
 
+      activate
+
       @shell_runner = Util::ShellRunner.supervise.actor
 
       @mounted_disks = []
 
-      # populate_mounted_disks
+      populate_mounted_disks
 
       @disk_watcher = DiskWatcher.supervise(@shell_runner).actor
       @disk_watcher.on(:disk_added, current_actor, :disk_added!)
@@ -56,9 +58,10 @@ module AdventureHub
 
     end
 
-    def with_repo
-      return unless block_given?
-      DataMapper.repository(repo_dm_id){ yield }
+    ##
+    # Make this repo as the default DataMapper repo
+    def activate
+      DataMapper.setup(:default, "sqlite:#{resource_db_path.expand_path}")
     end
 
     def mounted?
@@ -103,6 +106,11 @@ module AdventureHub
     #returns the id under which the datamapper repository is registered
     def repo_dm_id
       @repo_dm_id ||= :"repo_#{self.object_id}"
+    end
+
+    def populate_mounted_disks
+      disks = Util::DiskInfo.new(@shell_runner).data
+      disks.values.each{|d|disk_added d}
     end
 
   end
