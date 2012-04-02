@@ -10,7 +10,9 @@ module AdventureHub
       def perform
         info "scanning #{@source_path.realpath}"
         source_paths = SourceScanner.new(@source_path).scan
-        destination = @repo.get_incoming_path_for_source
+        total_size = source_paths.map(&:size).sum
+
+        destination = @repo.get_incoming_path_for_source(total_size)
 
         source_dcim = @source_path + SourceScanner::DCIM
         info scan_summary(source_paths)

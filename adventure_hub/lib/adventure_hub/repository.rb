@@ -39,8 +39,8 @@ module AdventureHub
       @base_path = base_path
 
       @shell_runner = Util::ShellRunner.supervise.actor
-
-      # @disk_watcher = DiskWatcher.supervise(@shell_runner).actor
+      @disk_watcher = DiskWatcher.supervise(@shell_runner).actor
+      
       # @disk_watcher.on(:disk_added, current_actor, :disk_added!)
       # @disk_watcher.on(:disk_removed, current_actor, :disk_removed!)
 
@@ -63,13 +63,19 @@ module AdventureHub
 
     ##
     # Returns a path
-    def get_incoming_path_for_source
-      sequence = 0
-      proposed = incoming_path + "#{Time.now.to_i}.#{sequence}"
-      while proposed.exist?
+    def get_incoming_path_for_source(needed_space)
+      # find a disk with enough space
+
+      raise "Cannot find a disk with enough space" unless disk
+
+      incoming_path = disk.incoming_path
+
+      # ensure unique directory by using a sequence
+      sequence = -1
+      begin
         sequence += 1
         proposed = incoming_path + "#{Time.now.to_i}.#{sequence}"
-      end
+      end while proposed.exist?
 
       proposed.mkpath
       proposed
@@ -95,12 +101,6 @@ module AdventureHub
     #returns the id under which the datamapper repository is registered
     def repo_dm_id
       @repo_dm_id ||= :"repo_#{self.object_id}"
-    end
-
-    def incoming_path
-      path = @base_path + "incoming"
-      path.mkpath
-      path
     end
 
   end
