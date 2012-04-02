@@ -37,11 +37,14 @@ module AdventureHub
 
     def initialize(base_path)
       @base_path = base_path
-      @shell_runner = Util::ShellRunner.new
-      @disk_watcher = DiskWatcher.new(@shell_runner)
-      @disk_watcher.on(:disk_changed, current_actor, :disk_changes!)
 
-      # @incoming = IncomingProcessor.supervise(current_actor)
+      @shell_runner = Util::ShellRunner.supervise.actor
+
+      # @disk_watcher = DiskWatcher.supervise(@shell_runner).actor
+      # @disk_watcher.on(:disk_added, current_actor, :disk_added!)
+      # @disk_watcher.on(:disk_removed, current_actor, :disk_removed!)
+
+      @mounted_disks = []
 
       DataMapper.setup(repo_dm_id, "sqlite:#{resource_db_path.expand_path}")
       DataMapper::Model.descendants.each do |model|
@@ -50,7 +53,8 @@ module AdventureHub
     end
 
     def with_repo
-       DataMapper.repository(repo_dm_id){ yield }
+      return unless block_given?
+      DataMapper.repository(repo_dm_id){ yield }
     end
 
     def mounted?

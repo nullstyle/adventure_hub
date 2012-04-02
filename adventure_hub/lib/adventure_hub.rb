@@ -40,9 +40,9 @@ module AdventureHub
   end
 
   module Models
-    autoload :Disk,     'adventure_hub/models/disk'
 
     DataMapper.setup(:default, {:adapter => "in_memory"})
+    require 'adventure_hub/models/disk'
     require 'adventure_hub/models/resource'
     require 'adventure_hub/models/sequence'
     require 'adventure_hub/models/file'
