@@ -10,7 +10,7 @@ module AdventureHub
         raw = result.stdout.lines
         
         header = raw.first.split
-        disk_lines = raw.drop(1).map(&:split)
+        disk_lines = raw.drop(1).map{|line| line.split(/\s+/, 6)}
 
         
         @data = disk_lines.inject({}) do |result, disk|
