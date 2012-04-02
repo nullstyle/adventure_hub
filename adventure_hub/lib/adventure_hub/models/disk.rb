@@ -11,7 +11,7 @@ module AdventureHub
       property :uuid, UUID, :key => true
       property :last_known_available_space, Integer
 
-      before :create, :set_uuid
+      before :valid?, :set_uuid
 
       attr_accessor :mounted_path
 
@@ -20,7 +20,9 @@ module AdventureHub
         return nil unless uuid_path.exists?
         uuid = uuid.read.strip
 
-        get(uuid)
+        disk = get(uuid)
+        disk.ensure_structure
+        disk
       end
 
       ##
@@ -29,10 +31,17 @@ module AdventureHub
       #
       def self.init(repo, mounted_path)
         # make sure it's not a disk already
-        raise ArgumentError, "Disk is already used by an ahub repo" if uuid_path.exist?
 
-        disk = repo.with_repo{ new }
-        # disk.
+        repo.with_repo do
+          disk = new
+          disk.mounted_path = mounted_path
+
+          raise ArgumentError, "Disk is already used by an ahub repo" if disk.uuid_path.exist?
+
+          p disk.save
+          disk.ensure_structure
+          disk
+        end
       end
 
 
@@ -68,16 +77,16 @@ module AdventureHub
         @disk_info[:total_size]
       end
 
+      def ensure_structure
+        base_path.mkpath
+        uuid_path.open("w"){ |f| f.puts uuid } unless uuid_path.exist?
+        sources_path.mkpath
+        derivatives_path.mkpath
+      end
+
       private
       def set_uuid
         self.uuid = UUIDTools::UUID.timestamp_create
-      end
-
-      def ensure_structure
-        base_path.mkpath
-        uuid_path.open("w"){ |f| f.puts uuid }
-        sources_path.mkpath
-        derivatives_path.mkpath
       end
     end
   end

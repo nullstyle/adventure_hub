@@ -37,19 +37,23 @@ module AdventureHub
 
     def initialize(base_path)
       @base_path = base_path
-
-      @shell_runner = Util::ShellRunner.supervise.actor
-      @disk_watcher = DiskWatcher.supervise(@shell_runner).actor
-      
-      # @disk_watcher.on(:disk_added, current_actor, :disk_added!)
-      # @disk_watcher.on(:disk_removed, current_actor, :disk_removed!)
-
-      @mounted_disks = []
-
       DataMapper.setup(repo_dm_id, "sqlite:#{resource_db_path.expand_path}")
       DataMapper::Model.descendants.each do |model|
         model.auto_upgrade! repo_dm_id
       end
+
+      @shell_runner = Util::ShellRunner.supervise.actor
+
+      @mounted_disks = []
+
+      # populate_mounted_disks
+
+      @disk_watcher = DiskWatcher.supervise(@shell_runner).actor
+      @disk_watcher.on(:disk_added, current_actor, :disk_added!)
+      @disk_watcher.on(:disk_removed, current_actor, :disk_removed!)
+
+
+
     end
 
     def with_repo
@@ -86,10 +90,8 @@ module AdventureHub
     end
 
     def disk_added(disk)
-      if repo_disk = Model::Disk.retrieve(disk[:mount])
+      if repo_disk = Models::Disk.retrieve(disk[:mount])
         @mounted_disks << repo_disk
-      elsif false # a source
-        # if it is a source instead, import it.
       end
     end
 
