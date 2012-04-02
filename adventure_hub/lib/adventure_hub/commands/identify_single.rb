@@ -9,6 +9,7 @@ module AdventureHub
       MOVIE_EXTENSIONS = %w( mov mp4 avi )
       GPS_EXTENSIONS = %w( nmea )
       PHOTO_EXTENSIONS = %w( jpeg jpg nef rw2 png )
+      AUDIO_EXTENSIONS = %w( wav mp3 aac )
 
       def initialize(path)
         super()
@@ -31,6 +32,7 @@ module AdventureHub
         case extension
         when *MOVIE_EXTENSIONS ; return :movie
         when *PHOTO_EXTENSIONS ; return :photo
+        when *AUDIO_EXTENSIONS ; return :audio
         end
 
         :unknown
