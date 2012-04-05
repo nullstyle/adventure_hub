@@ -30,7 +30,7 @@ module AdventureHub
         end
         total_size = copy.total_size
 
-        # add_child copy
+        add_child copy
         wait_for_children
 
         info "Initial copy complete (#{total_size} bytes imported)..."
