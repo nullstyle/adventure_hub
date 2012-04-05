@@ -11,6 +11,8 @@ module AdventureHub
 
     REPO_FILE = Pathname.new("main.ahubrepo")
     attr_reader :mounted_disks
+    attr_reader :shell_runner
+    attr_reader :disk_watcher
 
     def self.repository?(path)
       local_repo_file = path + REPO_FILE
@@ -18,7 +20,7 @@ module AdventureHub
     end
 
     def self.create(path)
-      raise ArgumentError, "#{path} is already a repo!" if repository?(path)
+      raise ArgumentError,  "#{path} is already a repo!" if repository?(path)
 
       if path.exist? && !path.children.empty?
         raise ArgumentError, "#{path} is not empty!"
@@ -54,13 +56,17 @@ module AdventureHub
       @disk_watcher.on(:disk_added, current_actor, :disk_added!)
       @disk_watcher.on(:disk_removed, current_actor, :disk_removed!)
 
+    end
 
-
+    def self.current
+      @@current_repository ||= nil
+      @@current_repository
     end
 
     ##
     # Make this repo as the default DataMapper repo
     def activate
+      @@current_repository = current_actor
       DataMapper.setup(:default, "sqlite:#{resource_db_path.expand_path}")
     end
 
@@ -72,6 +78,11 @@ module AdventureHub
     # Returns a path
     def get_incoming_path_for_source(needed_space)
       # find a disk with enough space
+      disk = @mounted_disks.find do |d|
+        d.refresh_disk_info(@shell_runner)
+        puts "#{d.available_space} > #{needed_space}"
+        d.available_space > needed_space
+      end
 
       raise "Cannot find a disk with enough space" unless disk
 
@@ -94,7 +105,9 @@ module AdventureHub
 
     def disk_added(disk)
       if repo_disk = Models::Disk.retrieve(disk[:mount])
+        repo_disk.ensure_structure
         @mounted_disks << repo_disk
+        @mounted_disks.sort_by!(&:position)
       end
     end
 

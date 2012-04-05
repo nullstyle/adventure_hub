@@ -4,18 +4,19 @@ module AdventureHub
       def initialize(repo, source_path)
         super()
         @source_path = source_path
+        @scanner = SourceScanner.new(@source_path)
         @repo = repo
       end
       
       def perform
         info "scanning #{@source_path.realpath}"
-        source_paths = SourceScanner.new(@source_path).scan
+        source_paths = @scanner.scan
         total_size = source_paths.map(&:size).sum
+        info @scanner.summary
 
         destination = @repo.get_incoming_path_for_source(total_size)
 
         source_dcim = @source_path + SourceScanner::DCIM
-        info scan_summary(source_paths)
 
         destination_paths = source_paths.map{|f| destination + f.relative_path_from(source_dcim)}
 
@@ -29,31 +30,20 @@ module AdventureHub
         end
         total_size = copy.total_size
 
-        add_child copy
+        # add_child copy
         wait_for_children
 
         info "Initial copy complete (#{total_size} bytes imported)..."
         info "Deleting from source"
 
-
+        # TODO: register incoming folder with repo
+        # repo.register_import destination
         info "Acquisition complete"
       end
 
 
       private
-      def scan_summary(files)
-        extensions = files.map{|f| f.extname}
-        extension_counts = {}
-        extensions.each do |ext|
-          extension_counts[ext] ||= 0
-          extension_counts[ext] += 1
-        end
 
-        extension_counts.inject("Found #{files.length} files:\r\n") do |summary, ext_count|
-          ext, count = *ext_count
-          summary += "  #{ext.ljust(6)}#{count} files\r\n"
-        end
-      end
     end
   end
 end

@@ -4,24 +4,24 @@ module AdventureHub
       
       def initialize(repo)
         super()
-        @search_base = Pathname.new Platforms.current::MOUNT_POINT
         @repo = repo
       end
 
       def perform
         @previous_tick_sources = []
+        @repo.disk_watcher.on(:disk_added, current_actor, :start_acquire!)
+
         info "Waiting for new sources..."
         
         loop do
-          current_sources = find_sources
-          new_sources = current_sources - @previous_tick_sources
-
-          new_sources.each do |source|
-            add_child Acquire.new(@repo, source)
-          end
-
-          @previous_tick_sources = current_sources
           sleep 1
+        end
+      end
+
+      def start_acquire(disk)
+        mount = disk[:mount]
+        if SourceScanner.source? mount
+          add_child Acquire.new(@repo, mount)
         end
       end
       

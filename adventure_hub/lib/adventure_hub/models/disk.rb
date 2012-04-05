@@ -53,12 +53,16 @@ module AdventureHub
         @mounted_path + "adventures"
       end
 
-      def refresh_disk_info
-        @disk_info = Util::DiskInfo.new.info_for_path(base_path)
+      def refresh_disk_info(runner)
+        @disk_info = Util::DiskInfo.new(runner).info_for_path(base_path)
       end
 
       def uuid_path
         base_path + "uuid"
+      end
+
+      def incoming_path
+        base_path + "incoming"
       end
 
       def masters_path
@@ -82,6 +86,7 @@ module AdventureHub
         uuid_path.open("w"){ |f| f.puts uuid } unless uuid_path.exist?
         masters_path.mkpath
         derivatives_path.mkpath
+        incoming_path.mkpath
       end
 
       private

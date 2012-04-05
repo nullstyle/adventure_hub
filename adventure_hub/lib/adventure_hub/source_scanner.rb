@@ -26,6 +26,21 @@ module AdventureHub
       
       dirs.map{|dir| get_files dir}.flatten
     end
+
+    def summary
+      files = scan
+      extensions = files.map{|f| f.extname}
+      extension_counts = {}
+      extensions.each do |ext|
+        extension_counts[ext] ||= 0
+        extension_counts[ext] += 1
+      end
+
+      extension_counts.inject("Found #{files.length} files:\r\n") do |summary, ext_count|
+        ext, count = *ext_count
+        summary += "  #{ext.ljust(6)}#{count} files\r\n"
+      end
+    end
     
     
     private
