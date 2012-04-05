@@ -16,7 +16,7 @@ module AdventureHub
         @data = disk_lines.inject({}) do |result, disk|
           result[disk.first] = {
             device: disk.first,
-            mount: Pathname.new(disk.last),
+            mount: Pathname.new(disk.last.strip),
             total_size: disk[1].to_i * 1024,
             available_size: disk[3].to_i * 1024
           }
