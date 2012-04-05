@@ -9,12 +9,17 @@ module AdventureHub
     desc "acquire SOURCE", "inspects the provided source and imports any media found at that source"
     def acquire(source_path)
       repo = get_repository
-      run_root_command Commands::Acquire.new(Pathname.new(source_path))
+      run_root_command Commands::Acquire.new(repo, Pathname.new(source_path))
     end
 
-    desc "init PATH", "creates a new ahub repository"
-    def init(path=".")
-      Repository.create(Pathname.new(path))
+    desc "init TYPE PATH", "creates a new ahub repository"
+    def init(type, path)
+      case type
+      when "repo" ; Repository.create(Pathname.new(path))
+      when "disk" ;
+        repo = get_repository
+        Models::Disk.init(Pathname.new(path))
+      end
     end
 
     desc "repl", "start a repl"
