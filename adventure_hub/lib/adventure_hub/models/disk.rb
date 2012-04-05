@@ -7,9 +7,10 @@ module AdventureHub
     class Disk
       include DataMapper::Resource
 
-
       property :uuid, UUID, :key => true
       property :last_known_available_space, Integer
+      is :list
+      default_scope(:default).update(:order => [:position.asc])
 
       before :valid?, :set_uuid
 
@@ -60,8 +61,8 @@ module AdventureHub
         base_path + "uuid"
       end
 
-      def sources_path
-        base_path + "sources"
+      def masters_path
+        base_path + "masters"
       end
 
       def derivatives_path
@@ -79,7 +80,7 @@ module AdventureHub
       def ensure_structure
         base_path.mkpath
         uuid_path.open("w"){ |f| f.puts uuid } unless uuid_path.exist?
-        sources_path.mkpath
+        masters_path.mkpath
         derivatives_path.mkpath
       end
 

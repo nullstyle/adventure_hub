@@ -34,6 +34,7 @@ Gem::Specification.new do |s|
   
   s.add_runtime_dependency "data_mapper",       ">= 1.2.0"
   s.add_runtime_dependency "dm-sqlite-adapter", ">= 1.2.0"
+  s.add_runtime_dependency "dm-is-list", ">= 1.2.0"
   s.add_runtime_dependency "do_sqlite3", ">= 0.10.8"
 
   s.add_development_dependency "rspec", "~> 2.9.0"

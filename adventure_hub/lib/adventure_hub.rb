@@ -5,13 +5,14 @@ require 'adventure_hub/core_ext/object'
 require 'active_support/core_ext/numeric'
 require 'adventure_hub/core_ext/numeric'
 require 'adventure_hub/core_ext/pathname'
+require 'active_support/core_ext/enumerable'
 
 require 'thor'
 require 'celluloid'
 require 'terminfo'
 require 'data_mapper'
 require 'dm-types'
-
+require 'dm-is-list'
 
 require 'adventure_hub/celluloid_ext/actor'
 require 'adventure_hub/celluloid_ext/actor_proxy'
