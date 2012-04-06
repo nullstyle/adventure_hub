@@ -44,13 +44,17 @@ module AdventureHub
         model.auto_upgrade! repo_dm_id
       end
 
+      disks_path.mkpath
+
+      
+
       activate
 
       @shell_runner = Util::ShellRunner.supervise.actor
 
       @mounted_disks = []
-
       populate_mounted_disks
+      populate_mounted_disk_symlinks
 
       @disk_watcher = DiskWatcher.supervise(@shell_runner).actor
       @disk_watcher.on(:disk_added, current_actor, :disk_added!)
@@ -100,8 +104,13 @@ module AdventureHub
     end
 
     def resource_db_path
-      @base_path + "resources.sqlite"
+      @resource_db_path ||= (@base_path + "resources.sqlite")
     end
+
+    def disks_path
+      @disks_path ||= (@base_path + "disks")
+    end
+
 
     def disk_added(disk)
       if repo_disk = Models::Disk.retrieve(disk[:mount])
@@ -123,8 +132,17 @@ module AdventureHub
 
     def populate_mounted_disks
       disks = Util::DiskInfo.new(@shell_runner).data
-      disks.values.each{|d|disk_added d}
+      disks.values.each{|d| disk_added d}
     end
 
+    def populate_mounted_disk_symlinks
+      current_symlinks = disks_path.children.select(&:symlink?)
+      current_symlinks.map(&:delete)
+
+      @mounted_disks.each do |d|
+        (disks_path + d.uuid.to_s).make_symlink d.mounted_path
+      end
+    end
+    
   end
 end
