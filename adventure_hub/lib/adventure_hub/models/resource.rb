@@ -5,7 +5,7 @@ module AdventureHub
       include DataMapper::Resource
 
       property :id,           Serial
-      property :type,         Enum[ :photo, :video, :journal, :gps, :unknown ]
+      property :type,         Enum[ :photo, :video, :journal, :gps, :audio, :unknown ]
       property :occurred_at,  Time
       property :duration,     Float
       property :metadata,     Json

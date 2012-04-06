@@ -8,4 +8,18 @@ class Pathname
   def parent_of?(other)
     other.child_of?(self)
   end
+
+  def has_child?(other)
+    self.children.detect{|p| p.basename == other}
+  end
+
+  def has_child_dir?(other)
+    self.children.detect{|p| p.directory? && p.basename == other}
+  end
+
+  def walk(&block)
+    self.children.each do |child|
+      child.directory? ? child.walk(&block) : block.call(child)
+    end
+  end
 end

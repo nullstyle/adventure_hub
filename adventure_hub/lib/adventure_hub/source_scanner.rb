@@ -4,27 +4,27 @@ module AdventureHub
   class SourceScanner
     DCIM = Pathname.new("DCIM")
     STEREO = Pathname.new("STEREO")
-    
-    def self.source?(pathname)
-      return false unless pathname.directory?
+    GPSFILES = Pathname.new("GPSFILES")
 
-      return true if dcim?(pathname)
-      return true if stereo?(pathname)
+    SOURCES = [DCIM, STEREO, GPSFILES]
+
+    def self.source?(path)
+      return false unless path.directory?
+      return true if SOURCES.any?{|s| path.has_child_dir?(s)}
 
       false
     end
     
     def initialize(path)
       @path = path
+      @possible_sources = SOURCES.map{|s| @path + s }
     end
     
     def scan
-      search_base = (@path + "DCIM") if self.class.dcim?(@path)
-      search_base ||= (@path + "STEREO") if self.class.stereo?(@path)
-
-      dirs = search_base.children.select(&:directory?)
-      
-      dirs.map{|dir| get_files dir}.flatten
+      search_base = @possible_sources.find{|f| f.exist?}
+      found = []
+      search_base.walk{|p| found << p}
+      found
     end
 
     def summary
@@ -44,13 +44,7 @@ module AdventureHub
     
     
     private
-    def self.dcim?(pathname)
-      pathname.children.detect{|p| p.directory? && p.basename == DCIM}
-    end
 
-    def self.stereo?(pathname)
-      pathname.children.detect{|p| p.directory? && p.basename == STEREO}
-    end
 
     def get_files(dir)
       dir.children.select{|path| !path.directory? }
