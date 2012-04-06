@@ -13,6 +13,7 @@ require 'terminfo'
 require 'data_mapper'
 require 'dm-types'
 require 'dm-is-list'
+require 'nokogiri'
 
 require 'adventure_hub/celluloid_ext/actor'
 require 'adventure_hub/celluloid_ext/actor_proxy'
@@ -63,8 +64,9 @@ module AdventureHub
     autoload :Eventing,     "adventure_hub/util/eventing"
 
     module Metadata
-      autoload :Photo, "adventure_hub/util/metadata/photo"
-      autoload :Video, "adventure_hub/util/metadata/video"
+      autoload :Photo,  "adventure_hub/util/metadata/photo"
+      autoload :Video,  "adventure_hub/util/metadata/video"
+      autoload :Gps,    "adventure_hub/util/metadata/gps"
     end
   end
   
