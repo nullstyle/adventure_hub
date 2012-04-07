@@ -2,9 +2,7 @@ module AdventureHub
   module Util
     module Metadata
 
-      class Video
-        include Celluloid
-
+      module Video
         def extract(path, runner)
           json    = runner.run("ffprobe -v quiet -print_format json -show_streams #{@path}").stdout
           data    = MultiJson.decode(json)
@@ -18,6 +16,8 @@ module AdventureHub
             audio_metadata: audio_stream
           }
         end
+
+        extend self
       end
 
     end

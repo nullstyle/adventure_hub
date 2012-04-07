@@ -2,9 +2,7 @@ module AdventureHub
   module Util
     module Metadata
 
-      class Gps
-        include Celluloid
-
+      module Gps
         FORMAT_MAP = {
           ".log" => :nmea,
           ".gpx" => :gpx
@@ -34,6 +32,8 @@ module AdventureHub
         def format_for(path)
           FORMAT_MAP[path.extname]
         end
+
+        extend self
       end
 
     end
