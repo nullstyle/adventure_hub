@@ -96,7 +96,7 @@ module AdventureHub
       sequence = -1
       begin
         sequence += 1
-        proposed = incoming_path + "#{Time.now.to_i}.#{sequence}"
+        proposed = incoming_path + "#{Time.now.utc.iso8601}.#{sequence}"
       end while proposed.exist?
 
       proposed.mkpath

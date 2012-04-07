@@ -16,9 +16,7 @@ module AdventureHub
 
         destination = @repo.get_incoming_path_for_source(total_size)
 
-        source_dcim = @source_path + SourceScanner::DCIM
-
-        destination_paths = source_paths.map{|f| destination + f.relative_path_from(source_dcim)}
+        destination_paths = source_paths.map{|f| destination + f.relative_path_from(@source_path)}
 
         sources_and_destinations = source_paths.zip(destination_paths)
         copy = CopyBatch.new
