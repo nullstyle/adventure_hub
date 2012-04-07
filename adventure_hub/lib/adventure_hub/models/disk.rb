@@ -22,6 +22,8 @@ module AdventureHub
         uuid = uuid_path.read.strip
 
         disk = get(uuid)
+        return nil unless disk
+
         disk.mounted_path = mounted_path
         disk.ensure_structure
         disk
@@ -49,6 +51,10 @@ module AdventureHub
         self.mounted_path.present?
       end
 
+      def stable_path
+        Pathname.new(uuid.to_s)
+      end
+
       def base_path
         @mounted_path + "adventures"
       end
@@ -65,12 +71,8 @@ module AdventureHub
         base_path + "incoming"
       end
 
-      def masters_path
-        base_path + "masters"
-      end
-
-      def derivatives_path
-        base_path + "derivatives"
+      def resources_path
+        base_path + "resources"
       end
 
       def available_space
@@ -84,13 +86,13 @@ module AdventureHub
       def ensure_structure
         base_path.mkpath
         uuid_path.open("w"){ |f| f.puts uuid } unless uuid_path.exist?
-        masters_path.mkpath
-        derivatives_path.mkpath
+        resources_path.mkpath
         incoming_path.mkpath
       end
 
       private
       def set_uuid
+        return unless self.uuid.blank?
         self.uuid = UUIDTools::UUID.timestamp_create
       end
     end

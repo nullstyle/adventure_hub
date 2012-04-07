@@ -78,15 +78,18 @@ module AdventureHub
       self.class.repository?(@base_path)
     end
 
+    def get_mounted_disk_with_space(needed_space)
+      @mounted_disks.find do |d|
+        d.refresh_disk_info(@shell_runner)
+        d.available_space > needed_space
+      end
+    end
+
     ##
     # Returns a path
     def get_incoming_path_for_source(needed_space)
       # find a disk with enough space
-      disk = @mounted_disks.find do |d|
-        d.refresh_disk_info(@shell_runner)
-        puts "#{d.available_space} > #{needed_space}"
-        d.available_space > needed_space
-      end
+      disk = get_mounted_disk_with_space(needed_space)
 
       raise "Cannot find a disk with enough space" unless disk
 

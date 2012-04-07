@@ -5,10 +5,14 @@ module AdventureHub
       include DataMapper::Resource
 
       belongs_to :resource, :key => true #parent of this sequence
-      property :name, String, :key => true
-
+      property :name, String, :key => true, :unique => false
+      property :source, Boolean
       has n, :files
 
+
+      def path
+        resource.path + self.name
+      end
     end
     
   end

@@ -5,7 +5,4 @@ class Object
     false
   end
 
-  def path(str)
-    Pathname.new(str)
-  end
 end

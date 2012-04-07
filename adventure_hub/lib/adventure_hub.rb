@@ -39,6 +39,12 @@ module AdventureHub
     autoload :CopyBatch,      'adventure_hub/commands/copy_batch'
     autoload :CopySingle,     'adventure_hub/commands/copy_single'
     autoload :IdentifySingle, 'adventure_hub/commands/identify_single'
+
+    module Make
+      autoload :Base,   'adventure_hub/commands/make/base'
+      autoload :Gps,    'adventure_hub/commands/make/gps'
+      autoload :Photo,  'adventure_hub/commands/make/photo'
+    end
   end
 
   module Models
@@ -62,6 +68,7 @@ module AdventureHub
     autoload :ShellRunner,  "adventure_hub/util/shell_runner"
     autoload :DiskInfo,     "adventure_hub/util/disk_info"
     autoload :Eventing,     "adventure_hub/util/eventing"
+    autoload :Signature,    "adventure_hub/util/signature"
 
     module Metadata
       autoload :Photo,  "adventure_hub/util/metadata/photo"

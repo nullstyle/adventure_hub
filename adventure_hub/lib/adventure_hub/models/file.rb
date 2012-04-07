@@ -5,13 +5,19 @@ module AdventureHub
       include DataMapper::Resource
 
       belongs_to :sequence, :key => true #parent of this file
-      delegate :resource, :to => :sequence
+      property :position, Integer,  :key => true, :default => 0, :unique => false
 
-      property :path,   FilePath, :key => true
-      property :index,  Integer, :key => true
+      delegate :resource, :to => :sequence
+      belongs_to :disk, :required => false
+
+      is :list, :scope => :sequence
       
+      property :extname,  String
       property :size,   Integer
 
+      def path
+        Pathname.new(disk.stable_path + sequence.path + "#{position}#{extname}")
+      end
     end
     
   end

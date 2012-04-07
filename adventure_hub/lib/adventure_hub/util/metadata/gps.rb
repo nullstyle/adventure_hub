@@ -12,8 +12,9 @@ module AdventureHub
           xml = Nokogiri::XML(get_gpx(path, runner))
           times = xml.search("trkpt > time").map{|t| Time.parse(t)}.sort
           {
-            occurred_at:    times.first,
-            duration:       (times.last - times.first).to_i,
+            occurred_at:  times.first,
+            duration:     (times.last - times.first).to_i,
+            format:       format_for(path),
           }
         end
 
