@@ -1,18 +1,34 @@
 module AdventureHub
   module Commands
-    ##
-    # The identify single commands looks at a given file, determines it's overall type,
-    # and then extracts out all metdata that is can find such as length, time of creation,
-    # format, etc.
-    # 
+
     class ProcessIncoming < Base
-      def initialize(repo)
+      GPS = Pathname.new("GPSFILES")
+
+      def initialize(repo, path. clear=false)
         super()
         @repo = repo
+        @path = path
       end
       
       def perform
-        # 
+        make_commands = []
+
+        # import files from the AMOD GPS tracker
+        gps_path = @path + GPS
+        if gps_path.exist?
+          gps_path.walk{|p| make_commands << Make::Gps.new(@repo, p) }
+        end
+
+        resource_summary = make_commands.summarize{|make| make.actor_class_name.split("::").last}
+
+        info resource_summary
+
+        make_commands.each{|make| add_child(make) ; wait_for_children}
+        
+        # delete incoming folder directory
+
+        @path.rmtree if clear
+          
       end
 
     end
