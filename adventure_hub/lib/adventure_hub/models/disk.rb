@@ -13,6 +13,7 @@ module AdventureHub
       default_scope(:default).update(:order => [:position.asc])
 
       before :valid?, :set_uuid
+      before(:destroy){|disk|  throw :halt }  #disks cannot be deleted
 
       attr_accessor :mounted_path
 
@@ -51,28 +52,24 @@ module AdventureHub
         self.mounted_path.present?
       end
 
-      def stable_path
-        Pathname.new(uuid.to_s)
-      end
-
-      def base_path
-        @mounted_path + "adventures"
+      def base_path(stable=false)
+        (stable ? Pathname.new(uuid.to_s) : @mounted_path) + "adventures"
       end
 
       def refresh_disk_info(runner)
         @disk_info = Util::DiskInfo.new(runner).info_for_path(base_path)
       end
 
-      def uuid_path
-        base_path + "uuid"
+      def uuid_path(stable=false)
+        base_path(stable) + "uuid"
       end
 
-      def incoming_path
-        base_path + "incoming"
+      def incoming_path(stable=false)
+        base_path(stable) + "incoming"
       end
 
-      def resources_path
-        base_path + "resources"
+      def resources_path(stable=false)
+        base_path(stable) + "resources"
       end
 
       def available_space

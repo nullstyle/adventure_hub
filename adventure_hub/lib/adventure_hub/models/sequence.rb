@@ -7,12 +7,12 @@ module AdventureHub
       belongs_to :resource, :key => true #parent of this sequence
       property :name, String, :key => true, :unique => false
       property :source, Boolean
-      has n, :files
-
+      has n, :files, :constraint => :destroy
 
       def path
         resource.path + self.name
       end
+
     end
     
   end

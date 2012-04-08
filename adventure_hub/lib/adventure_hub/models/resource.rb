@@ -15,7 +15,7 @@ module AdventureHub
       property :created_at,   DateTime
       property :updated_at,   DateTime
 
-      has n,   :sequences
+      has n,   :sequences, :constraint => :destroy
 
       def path
         Pathname.new("#{type}/#{id}")

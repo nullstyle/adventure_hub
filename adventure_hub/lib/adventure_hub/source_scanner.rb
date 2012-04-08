@@ -21,20 +21,17 @@ module AdventureHub
     end
     
     def scan
-      search_base = @possible_sources.find{|f| f.exist?}
+      search_bases = @possible_sources.select{|f| f.exist?}
       found = []
-      search_base.walk{|p| found << p}
+      search_bases.each do |search_base|
+        search_base.walk{|p| found << p}
+      end
       found
     end
 
     def summary
       files = scan
-      extensions = files.map{|f| f.extname}
-      extension_counts = {}
-      extensions.each do |ext|
-        extension_counts[ext] ||= 0
-        extension_counts[ext] += 1
-      end
+      extension_counts = files.summarize(&:extname)
 
       extension_counts.inject("Found #{files.length} files:\r\n") do |summary, ext_count|
         ext, count = *ext_count

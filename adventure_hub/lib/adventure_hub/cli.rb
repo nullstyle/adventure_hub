@@ -12,6 +12,12 @@ module AdventureHub
       run_root_command Commands::Acquire.new(repo, Pathname.new(source_path))
     end
 
+    desc "process_incoming PATH", "looks at the provided incoming folder and imports any resources within"
+    def process_incoming(path)
+      repo = get_repository
+      run_root_command Commands::ProcessIncoming.new(repo, Pathname.new(path))
+    end
+
     desc "init TYPE PATH", "creates a new ahub repository"
     def init(type, path)
       case type

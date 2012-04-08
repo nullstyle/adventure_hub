@@ -22,4 +22,19 @@ class Pathname
       child.directory? ? child.walk(&block) : block.call(child)
     end
   end
+
+  ##
+  # deletes successive parents of the current path as long as they are empty directories
+  def clear_empty_parents
+    current = self
+    loop do
+      current = current.parent
+      break unless current.exist?
+      break if current.children.any?
+
+      current.delete
+    end
+  rescue SystemCallError
+    #done if we try to delete a populated directory
+  end
 end

@@ -6,12 +6,14 @@ require 'active_support/core_ext/numeric'
 require 'adventure_hub/core_ext/numeric'
 require 'adventure_hub/core_ext/pathname'
 require 'active_support/core_ext/enumerable'
+require 'adventure_hub/core_ext/enumerable'
 
 require 'thor'
 require 'celluloid'
 require 'terminfo'
 require 'data_mapper'
 require 'dm-types'
+require 'dm-constraints'
 require 'dm-is-list'
 require 'nokogiri'
 
@@ -32,13 +34,13 @@ module AdventureHub
   autoload :CommandSystem,   'adventure_hub/command_system'
 
   module Commands
-    autoload :Base,           'adventure_hub/commands/base'
-    autoload :Verbosify,      'adventure_hub/commands/verbosify'
-    autoload :Acquire,        'adventure_hub/commands/acquire'
-    autoload :Watch,          'adventure_hub/commands/watch'
-    autoload :CopyBatch,      'adventure_hub/commands/copy_batch'
-    autoload :CopySingle,     'adventure_hub/commands/copy_single'
-    autoload :IdentifySingle, 'adventure_hub/commands/identify_single'
+    autoload :Base,             'adventure_hub/commands/base'
+    autoload :Verbosify,        'adventure_hub/commands/verbosify'
+    autoload :Acquire,          'adventure_hub/commands/acquire'
+    autoload :Watch,            'adventure_hub/commands/watch'
+    autoload :CopyBatch,        'adventure_hub/commands/copy_batch'
+    autoload :CopySingle,       'adventure_hub/commands/copy_single'
+    autoload :ProcessIncoming,  'adventure_hub/commands/process_incoming'
 
     module Make
       autoload :Base,   'adventure_hub/commands/make/base'

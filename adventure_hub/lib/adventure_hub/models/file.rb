@@ -15,8 +15,16 @@ module AdventureHub
       property :extname,  String
       property :size,   Integer
 
+      after :destroy, :remove_path
+
       def path
-        Pathname.new(disk.stable_path + sequence.path + "#{position}#{extname}")
+        Pathname.new(disk.resources_path(true) + sequence.path + "#{position}#{extname}")
+      end
+
+      private
+      def remove_path
+        path.delete if path.exist?
+        path.clear_empty_parents
       end
     end
     
