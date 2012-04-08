@@ -4,7 +4,7 @@ module AdventureHub
 
       module Video
         def extract(path, runner)
-          json    = runner.run("ffprobe -v quiet -print_format json -show_streams #{@path}").stdout
+          json    = runner.run("ffprobe -v quiet -print_format json -show_streams #{path}").stdout
           data    = MultiJson.decode(json)
           video_stream  = data["streams"].find{|stream|  stream["codec_type"] == "video" }
           audio_stream  = data["streams"].find{|stream|  stream["codec_type"] == "audio" }

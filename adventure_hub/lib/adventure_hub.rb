@@ -75,6 +75,7 @@ module AdventureHub
     module Metadata
       autoload :Photo,  "adventure_hub/util/metadata/photo"
       autoload :Video,  "adventure_hub/util/metadata/video"
+      autoload :Avchd,  "adventure_hub/util/metadata/avchd"
       autoload :Gps,    "adventure_hub/util/metadata/gps"
     end
   end
