@@ -5,8 +5,9 @@ module AdventureHub
     DCIM = Pathname.new("DCIM")
     STEREO = Pathname.new("STEREO")
     GPSFILES = Pathname.new("GPSFILES")
+    PRIVATE = Pathname.new("private")
 
-    SOURCES = [DCIM, STEREO, GPSFILES]
+    SOURCES = [DCIM, STEREO, GPSFILES, PRIVATE]
 
     def self.source?(path)
       return false unless path.directory?
