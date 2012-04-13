@@ -35,6 +35,10 @@ module AdventureHub
             total: @total_size
           }
         end
+        
+        @source.close
+        out_file.flush
+        out_file.close
       end
       
       
