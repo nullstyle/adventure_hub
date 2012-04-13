@@ -71,6 +71,7 @@ module AdventureHub
     autoload :DiskInfo,     "adventure_hub/util/disk_info"
     autoload :Eventing,     "adventure_hub/util/eventing"
     autoload :Signature,    "adventure_hub/util/signature"
+    autoload :Gpx,          "adventure_hub/util/gpx"
 
     module Metadata
       autoload :Photo,  "adventure_hub/util/metadata/photo"

@@ -18,6 +18,20 @@ module AdventureHub
       run_root_command Commands::ProcessIncoming.new(repo, Pathname.new(path))
     end
 
+    desc "make_today_gpx", "HACK: exports a today.gpx from the latest found gps log in the incoming dir"
+    def make_today_gpx
+      repo = get_repository
+      gps_logs = [ ]
+      repo.mounted_disks.each do |disk|
+        gps_logs += Pathname.glob(disk.incoming_path + "**/*.log")
+      end
+
+      latest = gps_logs.sort_by(&:mtime).last
+      puts latest
+      gpx =  AdventureHub::Util::Gpx.get_from_nmea(latest, repo.shell_runner)
+      open(File.expand_path("~/Documents/thetransam/today.gpx"), "w"){|f| f.write gpx}
+    end
+
     desc "init TYPE PATH", "creates a new ahub repository"
     def init(type, path)
       case type

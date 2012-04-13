@@ -1,3 +1,4 @@
+require 'shellwords'
 class Pathname
   def child_of?(other)
     return false if expand_path == other.expand_path
@@ -21,6 +22,10 @@ class Pathname
     self.children.each do |child|
       child.directory? ? child.walk(&block) : block.call(child)
     end
+  end
+
+  def shell_escape
+    Shellwords.escape(self.expand_path.to_s)
   end
 
   ##
