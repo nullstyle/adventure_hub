@@ -36,7 +36,7 @@ module AdventureHub
           }
         end
         
-        @source.close
+        @source_f.close
         out_file.flush
         out_file.close
       end
