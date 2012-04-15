@@ -34,8 +34,11 @@ module AdventureHub
         info "Initial copy complete (#{total_size} bytes imported)..."
         info "Deleting from source"
 
-        # TODO: register incoming folder with repo
-        # repo.register_import destination
+        source_paths.each do |path|
+          path.delete if path.exist?
+          path.clear_empty_parents
+        end
+
         info "Acquisition complete"
       end
 
